@@ -22,15 +22,15 @@ class FileStorage:
             json.dump(serialized_objects, file)
 
     def reload(self):
-        try:
-            if exists(self.__file_path):
-                with open(self.__file_path, 'r') as file:
+        if exists(self.__file_path):
+            with open(self.__file_path, 'r') as file:
+                try:
                     infomation = json.load(file)
 
                     for key, obj in infomation.items():
                         class_name, obj_id = key.split('.')
-                        obj_class = globals()[class_name]
+                        obj_class = eval(class_name)
                         obj_instance = obj_class(**obj)
                         self.__objects[key] = obj_instance
-        except FileNotFoundError:
-            pass
+                except Exception:
+                    pass
