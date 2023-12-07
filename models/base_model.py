@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import uuid
-from models import storage
 from datetime import datetime
+import models
 
 class BaseModel:
     def __init__(self, *args, **kwargs):
@@ -19,7 +19,7 @@ class BaseModel:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.utcnow()
             self.updated_at = datetime.utcnow()
-        storage.new(self)
+            models.storage.new(self)
         """if class_name:
             setattr(self, "__class__", class_name)"""
 
@@ -29,7 +29,7 @@ class BaseModel:
 
     def save(self):
         self.updated_at = datetime.utcnow()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         object_dict = self.__dict__.copy()
