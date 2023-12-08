@@ -2,17 +2,20 @@
 from os.path import exists
 import json
 from models.base_model import BaseModel
+from models.user import User
+"""FileStorage module"""
+
 
 class FileStorage:
     """
-
+    A class that handles file storage
     """
     __file_path = "file.json"
     __objects = {}
 
     def all(self):
         """
-
+        Returns object dictionary, that's all stored objs
         """
         return FileStorage.__objects
 
