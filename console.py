@@ -3,13 +3,18 @@ import cmd
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.review import Review
 """Console module"""
 
 
 class HBNBCommand(cmd.Cmd):
     """Contains entry point to the command interpreter"""
     prompt = "(hbnb) "
-    class_names = ["BaseModel", "User"]
+    class_names = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
 
     def emptyline(self):
         """Does nothing on empty input line"""
@@ -35,6 +40,7 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             """dynamically get class based on class name"""
+            class_name = args[0]
             new_instance = globals()[class_name]()
             new_instance.save()
             print(new_instance.id)
