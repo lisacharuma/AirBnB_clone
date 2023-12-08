@@ -14,7 +14,15 @@ from models.review import Review
 class HBNBCommand(cmd.Cmd):
     """Contains entry point to the command interpreter"""
     prompt = "(hbnb) "
-    class_names = ["BaseModel", "User", "Place", "State", "City", "Amenity", "Review"]
+    class_names = [
+            "BaseModel",
+            "User",
+            "Place",
+            "State",
+            "City",
+            "Amenity",
+            "Review"
+        ]
 
     def emptyline(self):
         """Does nothing on empty input line"""
@@ -134,6 +142,7 @@ class HBNBCommand(cmd.Cmd):
                 instance = objs[key]
                 setattr(instance, attribute_name, attribute_value)
                 instance.save()
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
