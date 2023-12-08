@@ -1,4 +1,5 @@
 import unittest
+import os
 import json
 from models import storage
 from models.base_model import BaseModel
@@ -85,6 +86,35 @@ class TestFileStorage(unittest.TestCase):
         self.assertTrue(hasattr(FileStorage, 'save'))
         self.assertTrue(callable(getattr(FileStorage, 'save')))
 
+    def test_save_serializes_objects_to_json_file(self):
+        """
+        Test if the save method serializes __objects to the JSON file at __file_path
+        """
+        fs = FileStorage()
+
+        # Create a BaseModel instance
+        my_model = BaseModel()
+
+        # Call the new method
+        fs.new(my_model)
+
+        # Call the save method
+        fs.save()
+
+        # Read the contents of the JSON file
+        with open(fs._FileStorage__file_path, 'r') as file:
+            file_contents = json.load(file)
+
+        # Expected key in the serialized JSON
+        expected_key = "{}.{}".format(my_model.__class__.__name__, my_model.id)
+
+        # Check if the key is present in the serialized JSON
+        self.assertIn(expected_key, file_contents)
+
+        # Check if the value associated with the key in the serialized JSON is the same as the object's to_dict()
+        self.assertEqual(file_contents[expected_key], my_model.to_dict())
+
+
 
     def test_reload_method_exists(self):
         """
@@ -92,6 +122,42 @@ class TestFileStorage(unittest.TestCase):
         """
         self.assertTrue(hasattr(FileStorage, 'reload'))
         self.assertTrue(callable(getattr(FileStorage, 'reload')))
+
+
+    def test_reload_deserializes_json_file_to_objects(self):
+        """
+        Test if reload deserializes the JSON file to __objects
+        (only if the JSON file exists; otherwise, do nothing)
+        """
+        fs = FileStorage()
+
+        my_model = BaseModel()
+
+        # Add the model to __objects
+        fs.new(my_model)
+
+        # Save the objects to the JSON file
+        fs.save()
+
+        # Reload should deserialize the JSON file to __objects
+        fs.reload()
+
+        reloaded_objects = fs.all()
+        reloaded_model = next(iter(reloaded_objects.values()))
+
+        # Compare the attributes excluding microseconds from datetime
+        self.assertNotEqual(my_model.__dict__['id'], reloaded_model.__dict__['id'])
+        self.assertEqual(my_model.__dict__['created_at'].date(), reloaded_model.__dict__['created_at'].date())
+        self.assertEqual(my_model.__dict__['updated_at'].date(), reloaded_model.__dict__['updated_at'].date())
+
+        # Remove the JSON file
+        os.remove(fs._FileStorage__file_path)
+
+        # Reload again should do nothing since the file doesn't exist
+        fs.reload()
+
+        # Check if __objects is still the same (not modified)
+        self.assertEqual(reloaded_objects, fs.all())
 
 if __name__ == '__main__':
     unittest.main()
