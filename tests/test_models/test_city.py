@@ -3,6 +3,7 @@ import unittest
 from models.city import City
 from models.base_model import BaseModel
 
+
 class TestCity(unittest.TestCase):
     """
     test the city class
@@ -28,6 +29,7 @@ class TestCity(unittest.TestCase):
         """
         city = City()
         self.assertTrue(hasattr(city, "name"))
+
     def test_if_state_id_is_empty(self):
         """
         test is stade id is empty string
@@ -41,6 +43,7 @@ class TestCity(unittest.TestCase):
         """
         city = City()
         self.assertEqual(city.name, "")
+
 
 if __name__ == "__main__":
     unittest.main()

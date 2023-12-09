@@ -4,6 +4,7 @@ import unittest
 from models.state import State
 from models.base_model import BaseModel
 
+
 class TestState(unittest.TestCase):
     """
     test cases for State class
@@ -29,6 +30,7 @@ class TestState(unittest.TestCase):
         """
         state = State()
         self.assertEqual(state.name, "")
+
 
 if __name__ == "__main__":
     unittest.main()
