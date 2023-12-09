@@ -37,6 +37,10 @@ class HBNBCommand(cmd.Cmd):
         print("")
         return True
 
+    def do_help(self, line):
+        """Get help on commands"""
+        cmd.Cmd.do_help(self, line)
+
     def do_create(self, line):
         """Creates a new BaseModel instance, saves and prints id
         create <class_name>
