@@ -4,9 +4,11 @@ import uuid
 from datetime import datetime
 from models.base_model import BaseModel
 
-class TestBaseModel(unittest.TestCase):
 
+class TestBaseModel(unittest.TestCase):
+    """ test for base model """
     def setUp(self):
+        """ the set up """
         self.my_model = BaseModel()
 
     def test_attributes(self):
@@ -53,6 +55,7 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue('__class__' in obj_dict)
 
     def test_str_method(self):
+        """ test if __str__ is in string """
         str_representation = str(self.my_model)
         self.assertIn("[BaseModel]", str_representation)
         self.assertIn("({})".format(self.my_model.id), str_representation)
