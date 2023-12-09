@@ -1,5 +1,6 @@
 #!/usr/bin/python3
 import cmd
+import sys
 from models.base_model import BaseModel
 from models import storage
 from models.user import User
@@ -30,11 +31,10 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, line):
         """Quit command to exit the program"""
-        return True
+        sys.exit(1)
 
     def do_EOF(self, line):
         """Exits program with Ctrl^D"""
-        print("")
         return True
 
     def do_help(self, line):
