@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+"""Contains the entry point of the command interpreter"""
 import cmd
 import sys
 from models.base_model import BaseModel
@@ -9,11 +10,10 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-"""Console module"""
 
 
 class HBNBCommand(cmd.Cmd):
-    """Contains entry point to the command interpreter"""
+    """Contains command interpreter commands"""
     prompt = "(hbnb) "
     class_names = [
             "BaseModel",
