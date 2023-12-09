@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+This is a FileStorage module
+"""
 from os.path import exists
 import json
 from models.base_model import BaseModel
@@ -8,12 +11,16 @@ from models.city import City
 from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
-"""FileStorage module"""
 
 
 class FileStorage:
     """
     A class that handles file storage
+
+    Attributes:
+        __file_path (str): specifies file path
+        __objects (dict): dictionary holding class stored objects
+
     """
     __file_path = "file.json"
     __objects = {}
@@ -27,6 +34,9 @@ class FileStorage:
     def new(self, obj):
         """
         Saves new BaseModel objs to FileStorage dict
+
+        Arg:
+        obj : the object to be set into the dictionary
         """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
         FileStorage.__objects[key] = obj
