@@ -37,28 +37,6 @@ class HBNBCommand(cmd.Cmd):
         """Exits program with Ctrl^D"""
         return True
 
-    def default(self, line):
-        """Handles unkown commands
-        eg User.all()
-        """
-        args = line.split('.')
-        class_name = args[0]
-        """split last part to get method name"""
-        method = args[1].split('(')
-        command = method[0]
-        """Create a dict containing valid args"""
-        methods = {
-                'all': self.do_all,
-                'show': self.do_show,
-                'destroy': self.do_destroy,
-                'update': self.do_update
-            }
-        if command in methods.keys():
-            return methods[command]("{} {}".format(class_name, ''))
-        else:
-            print("** Unknown syntax: {}".format(line))
-            return False
-
     def do_help(self, line):
         """Get help on commands"""
         cmd.Cmd.do_help(self, line)
@@ -135,10 +113,21 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
         else:
             class_name = args[0]
-            for key, value in objs.items():
-                if key.startswith(class_name):
-                    obj_list.append(str(value))
-            print(obj_list)
+            # Check if the class name is in the globals
+            if class_name in globals():
+                # Retrieve the class using globals
+                cls = globals()[class_name]
+                # Check if the class has an '__dict__' attribute
+                if hasattr(cls, '__dict__'):
+                    # Iterate through the class dictionary to find instances
+                    for key, value in objs.items():
+                        if key.split('.')[0] == class_name:
+                            obj_list.append(str(value))
+                    print(obj_list)
+                else:
+                    print("** class doesn't exist **")
+            else:
+                print("** class doesn't exist **")
 
     def do_update(self, line):
         """Updates an instance based on class name and id by adding attr
