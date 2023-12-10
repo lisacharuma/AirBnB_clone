@@ -51,13 +51,27 @@ class HBNBCommand(cmd.Cmd):
                 'all': self.do_all,
                 'show': self.do_show,
                 'destroy': self.do_destroy,
-                'update': self.do_update
+                'update': self.do_update,
+                'count': self.do_count
             }
         if command in methods.keys():
             return methods[command]("{} {}".format(class_name, ''))
         else:
             print("** Unknown syntax: {}".format(line))
             return False
+
+    def do_count(self, line):
+        """Returns class instance count
+        count <instance> OR <instance>.count()
+        """
+        """First retrieve all instances"""
+        instances = storage.all()
+        count = 0
+        """Iterate thru instances and count instances matching given key"""
+        for key in instances:
+            if line[:-1] in key:
+                count += 1
+        print(count)
 
     def do_help(self, line):
         """Get help on commands"""
